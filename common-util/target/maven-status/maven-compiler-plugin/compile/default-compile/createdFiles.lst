@@ -1,0 +1,3 @@
+be\snife\sbms\util\http\ServiceUtil.class
+be\snife\sbms\util\http\HttpErrorInfo.class
+be\snife\sbms\util\http\GlobalControllerExceptionHandler.class
