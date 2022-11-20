@@ -3,8 +3,6 @@ package be.snife.sbms.util.http;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +15,7 @@ import be.snife.sbms.api.exceptions.NotFoundException;
 @RestControllerAdvice
 class GlobalControllerExceptionHandler {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+  //private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
   @ResponseStatus(NOT_FOUND)
   @ExceptionHandler(NotFoundException.class)
@@ -41,7 +39,7 @@ class GlobalControllerExceptionHandler {
     final String path = request.getPath().pathWithinApplication().value();
     final String message = ex.getMessage();
 
-    LOG.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
+    //LOG.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
     return new HttpErrorInfo(httpStatus, path, message);
   }
 }

@@ -2,15 +2,13 @@ package be.snife.sbms.util.http;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServiceUtil {
-  private static final Logger LOG = LoggerFactory.getLogger(ServiceUtil.class);
+  //private static final Logger LOG = LoggerFactory.getLogger(ServiceUtil.class);
 
   private final String port;
 
