@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import be.snife.sbms.api.exceptions.InvalidInputException;
 import be.snife.sbms.api.exceptions.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
+@Slf4j
 class GlobalControllerExceptionHandler {
 
   //private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
@@ -39,7 +41,7 @@ class GlobalControllerExceptionHandler {
     final String path = request.getPath().pathWithinApplication().value();
     final String message = ex.getMessage();
 
-    //LOG.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
+    log.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
     return new HttpErrorInfo(httpStatus, path, message);
   }
 }
