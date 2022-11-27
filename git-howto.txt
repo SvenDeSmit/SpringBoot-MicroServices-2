@@ -1,0 +1,18 @@
+
+
+Use GIT on top folder level
+ 
+git status => status git repo
+git log => overview of commits
+
+git add . => add all untracked & modified files to STG
+git commit -m "My first commit" -a => add + commit 
+
+git push -v => push local branch to github
+
+git tag
+git tag -a v3.0 -m "chapter 3 intial release"
+git show v3.0
+
+
+

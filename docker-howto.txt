@@ -1,0 +1,12 @@
+docker build -t product-service .
+docker scan product-service-0.0.1-SNAPSHOT.jar
+docker images
+
+docker run -d -p8080:8080 -e "SPRING_PROFILES_ACTIVE=docker" --name my-product-srv product-service => detached mode
+
+docker logs my-product-srv -f
+
+docker-compose build
+docker-compose up -d
+docker-compose logs -f
+docker-compose logs -f product review
