@@ -17,31 +17,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class GlobalControllerExceptionHandler {
 
-  //private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
+	// private static final Logger LOG =
+	// LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
-  @ResponseStatus(NOT_FOUND)
-  @ExceptionHandler(NotFoundException.class)
-  public @ResponseBody HttpErrorInfo handleNotFoundExceptions(
-    ServerHttpRequest request, NotFoundException ex) {
+	@ResponseStatus(NOT_FOUND)
+	@ExceptionHandler(NotFoundException.class)
+	public @ResponseBody HttpErrorInfo handleNotFoundExceptions(ServerHttpRequest request, NotFoundException ex) {
 
-    return createHttpErrorInfo(NOT_FOUND, request, ex);
-  }
+		return createHttpErrorInfo(NOT_FOUND, request, ex);
+	}
 
-  @ResponseStatus(UNPROCESSABLE_ENTITY)
-  @ExceptionHandler(InvalidInputException.class)
-  public @ResponseBody HttpErrorInfo handleInvalidInputException(
-    ServerHttpRequest request, InvalidInputException ex) {
+	@ResponseStatus(UNPROCESSABLE_ENTITY)
+	@ExceptionHandler(InvalidInputException.class)
+	public @ResponseBody HttpErrorInfo handleInvalidInputException(ServerHttpRequest request,
+			InvalidInputException ex) {
 
-    return createHttpErrorInfo(UNPROCESSABLE_ENTITY, request, ex);
-  }
+		final String path = request.getPath().pathWithinApplication().value();
+		final String message = ex.getMessage();
 
-  private HttpErrorInfo createHttpErrorInfo(
-    HttpStatus httpStatus, ServerHttpRequest request, Exception ex) {
+		log.debug("Returning HTTP status: {} for path: {}, message: {}", UNPROCESSABLE_ENTITY, path, message);
 
-    final String path = request.getPath().pathWithinApplication().value();
-    final String message = ex.getMessage();
+		return createHttpErrorInfo(UNPROCESSABLE_ENTITY, request, ex);
+	}
 
-    log.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
-    return new HttpErrorInfo(httpStatus, path, message);
-  }
+	private HttpErrorInfo createHttpErrorInfo(HttpStatus httpStatus, ServerHttpRequest request, Exception ex) {
+
+		final String path = request.getPath().pathWithinApplication().value();
+		final String message = ex.getMessage();
+
+		log.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
+		return new HttpErrorInfo(httpStatus, path, message);
+	}
 }

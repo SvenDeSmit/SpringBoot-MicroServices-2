@@ -3,26 +3,79 @@ version: '2.1'
 services:
   product:
     build: product-service
+    image: svendesmit/springbootmicroservices2-product:v1
     mem_limit: 512m
+    ports:
+      - "8081:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   recommendation:
     build: recommendation-service
+    image: svendesmit/springbootmicroservices2-recommendation:v1
     mem_limit: 512m
+    ports:
+      - "8082:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
 
   review:
     build: review-service
+    image: svendesmit/springbootmicroservices2-review:v1
     mem_limit: 512m
+    ports:
+      - "8083:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+
 
   product-composite:
     build: product-composite-service
+    image: svendesmit/springbootmicroservices2-product-composite:v1
     mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      
+  mysql:
+    image: mysql:8.0.31
+    mem_limit: 512m
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=review-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 60
+      
+  mongodb:
+    image: mongo:6.0.3
+    mem_limit: 512m
+    ports:
+      - "27017:27017"
+    command: mongod
+    healthcheck:
+      #test: "mongo --eval 'db.stats().ok === 1'"
+      #test: echo 'db.stats().ok' | mongo localhost:27017 --quiet
+      #test: bash -c "if mongo --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'; then exit 0; fi; exit 1;"
+      test: "mongosh 'mongodb://localhost:27017' --norc --quiet --eval 'db.getMongo()'"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+

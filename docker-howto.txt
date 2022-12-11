@@ -1,4 +1,4 @@
-docker build -t product-service .
+cd 
 docker scan product-service-0.0.1-SNAPSHOT.jar
 docker images
 
@@ -11,3 +11,15 @@ docker-compose up -d
 docker-compose logs -f
 docker-compose logs -f product review
 docker-compose down
+
+docker-compose exec mysql mysql --uuser -p review-db
+
+push images to docker hub:
+
+for each image: create new image for dockerhub svendesmit/springbootmicroservices2-product-composite:v? (put that image in docker-compose.yml)
+
+docker tag springbootmicroservices2-product-composite:latest svendesmit/springbootmicroservices2-product-composite:v1
+
+Login: https://stackoverflow.com/questions/57108005/login-to-docker-hub-by-command-line
+
+docker-compose push

@@ -27,6 +27,40 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 	}
 
 	@Override
+	public void createProduct(ProductAggregate body) {
+
+		try {
+
+			log.debug("createCompositeProduct: creates a new composite entity for productId: {}", body.getProductId());
+
+			Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
+			integration.createProduct(product);
+
+			if (body.getRecommendations() != null) {
+				body.getRecommendations().forEach(r -> {
+					Recommendation recommendation = new Recommendation(body.getProductId(), r.getRecommendationId(),
+							r.getAuthor(), r.getRate(), r.getContent(), null);
+					integration.createRecommendation(recommendation);
+				});
+			}
+
+			if (body.getReviews() != null) {
+				body.getReviews().forEach(r -> {
+					Review review = new Review(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(),
+							r.getContent(), null);
+					integration.createReview(review);
+				});
+			}
+
+			log.debug("createCompositeProduct: composite entities created for productId: {}", body.getProductId());
+
+		} catch (RuntimeException re) {
+			log.warn("createCompositeProduct failed", re);
+			throw re;
+		}
+	}
+
+	@Override
 	public ProductAggregate getProduct(int productId) {
 		log.debug("Getting Aggregate Product with productId = {} on {}", productId, serviceUtil.getServiceAddress());
 
@@ -46,6 +80,20 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 		return createProductAggregate(product, recommendations, reviews, serviceUtil.getServiceAddress());
 	}
 
+	@Override
+	public void deleteProduct(int productId) {
+
+		log.debug("deleteCompositeProduct: Deletes a product aggregate for productId: {}", productId);
+
+		integration.deleteProduct(productId);
+
+		integration.deleteRecommendations(productId);
+
+		integration.deleteReviews(productId);
+
+		log.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
+	}
+
 	private ProductAggregate createProductAggregate(Product product, List<Recommendation> recommendations,
 			List<Review> reviews, String serviceAddress) {
 
@@ -58,13 +106,13 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 		List<RecommendationSummary> recommendationSummaries = (recommendations == null) ? null
 				// iterate over list
 				: recommendations.stream()
-						.map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate()))
+						.map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(),r.getContent()))
 						.collect(Collectors.toList());
 
 		// 3. Copy summary review info, if available
 		List<ReviewSummary> reviewSummaries = (reviews == null) ? null
 				// iterate over list
-				: reviews.stream().map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject()))
+				: reviews.stream().map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject(),r.getContent()))
 						.collect(Collectors.toList());
 
 		// 4. Create info regarding the involved microservices addresses

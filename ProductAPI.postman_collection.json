@@ -1,0 +1,402 @@
+{
+	"info": {
+		"_postman_id": "f73cff25-768f-4330-902e-7d2469ca32bc",
+		"name": "ProductAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6913753"
+	},
+	"item": [
+		{
+			"name": "Product API",
+			"item": [
+				{
+					"name": "POST /product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\":900,\r\n    \"name\":\"Product 100\",\r\n    \"weight\":100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlProduct}}/product",
+							"host": [
+								"{{baseUrlProduct}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /product/{productId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlProduct}}/product/900",
+							"host": [
+								"{{baseUrlProduct}}"
+							],
+							"path": [
+								"product",
+								"900"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /product/{productId} Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlProduct}}/product/900",
+							"host": [
+								"{{baseUrlProduct}}"
+							],
+							"path": [
+								"product",
+								"900"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Composite Product API",
+			"item": [
+				{
+					"name": "POST /product-composite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": 900,\r\n    \"name\": \"product name C\",\r\n    \"weight\": 300,\r\n    \"recommendations\": [\r\n        {\r\n            \"recommendationId\": 1,\r\n            \"author\": \"author 1\",\r\n            \"rate\": 1,\r\n            \"content\": \"content 1\"\r\n        },\r\n        {\r\n            \"recommendationId\": 2,\r\n            \"author\": \"author 2\",\r\n            \"rate\": 2,\r\n            \"content\": \"content 2\"\r\n        },\r\n        {\r\n            \"recommendationId\": 3,\r\n            \"author\": \"author 3\",\r\n            \"rate\": 3,\r\n            \"content\": \"content 3\"\r\n        }\r\n    ],\r\n    \"reviews\": [\r\n        {\r\n            \"reviewId\": 1,\r\n            \"author\": \"author 1\",\r\n            \"subject\": \"subject 1\",\r\n            \"content\": \"content 1\"\r\n        },\r\n        {\r\n            \"reviewId\": 2,\r\n            \"author\": \"author 2\",\r\n            \"subject\": \"subject 2\",\r\n            \"content\": \"content 2\"\r\n        },\r\n        {\r\n            \"reviewId\": 3,\r\n            \"author\": \"author 3\",\r\n            \"subject\": \"subject 3\",\r\n            \"content\": \"content 3\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCompositeProduct}}/product-composite",
+							"host": [
+								"{{baseUrlCompositeProduct}}"
+							],
+							"path": [
+								"product-composite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /product-composite/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlCompositeProduct}}/product-composite/900",
+							"host": [
+								"{{baseUrlCompositeProduct}}"
+							],
+							"path": [
+								"product-composite",
+								"900"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /product-composite/1 Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlCompositeProduct}}/product-composite/900",
+							"host": [
+								"{{baseUrlCompositeProduct}}"
+							],
+							"path": [
+								"product-composite",
+								"900"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recommendation API",
+			"item": [
+				{
+					"name": "POST /recommendation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\":900,\r\n    \"recommendationId\": 2,\r\n    \"author\":\"Sven De Smit\",\r\n    \"rate\":9,\r\n    \"content\":\"my content\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlRecommendation}}/recommendation",
+							"host": [
+								"{{baseUrlRecommendation}}"
+							],
+							"path": [
+								"recommendation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /recommendation?productId={productId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlRecommendation}}/recommendation?productId=100",
+							"host": [
+								"{{baseUrlRecommendation}}"
+							],
+							"path": [
+								"recommendation"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /recommendation?productId={productId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlRecommendation}}/recommendation?productId=900",
+							"host": [
+								"{{baseUrlRecommendation}}"
+							],
+							"path": [
+								"recommendation"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "900"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review API",
+			"item": [
+				{
+					"name": "POST /review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\":\"900\",\r\n    \"reviewId\":\"2\",\r\n    \"author\":\"Sven\",\r\n    \"subject\":\"my subject\",\r\n    \"content\":\"my content\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlReview}}/review",
+							"host": [
+								"{{baseUrlReview}}"
+							],
+							"path": [
+								"review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /review?productId={productId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlReview}}/review?productId=900",
+							"host": [
+								"{{baseUrlReview}}"
+							],
+							"path": [
+								"review"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "900"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /review?productId={productId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlReview}}/review?productId=900",
+							"host": [
+								"{{baseUrlReview}}"
+							],
+							"path": [
+								"review"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "900"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "localhost:7000/product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"string\",\r\n  \"productId\": 1,\r\n  \"weight\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/product",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/actuator/health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/actuator/health",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7001/actuator/health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7001/actuator/health",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8761/eureka/apps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eureka/apps",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eureka",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/actuator/gateway/routes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/actuator/gateway/routes",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator",
+						"gateway",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

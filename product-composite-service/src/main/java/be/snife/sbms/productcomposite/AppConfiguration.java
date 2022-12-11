@@ -15,7 +15,7 @@ import io.swagger.v3.oas.models.info.License;
 public class AppConfiguration {
 	
     @Bean
-    public RestTemplate restTesmplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
     
