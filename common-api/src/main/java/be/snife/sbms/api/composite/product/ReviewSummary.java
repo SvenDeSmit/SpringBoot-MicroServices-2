@@ -2,7 +2,9 @@ package be.snife.sbms.api.composite.product;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 public class ReviewSummary {
 
 	@Getter

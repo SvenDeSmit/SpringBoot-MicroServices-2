@@ -2,11 +2,16 @@ package be.snife.sbms.api.core.recommendation;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface RecommendationService {
 
@@ -17,7 +22,7 @@ public interface RecommendationService {
 	 * @return the recommendations of the product
 	 */
 	@GetMapping(value = "/recommendation", produces = "application/json")
-	List<Recommendation> getRecommendations(@RequestParam(value = "productId", required = true) int productId);
+	Flux<Recommendation> getRecommendations(@RequestParam(value = "productId", required = true) int productId);
 
 	/**
 	 * Sample usage, see below.
@@ -31,7 +36,8 @@ public interface RecommendationService {
 	 * @return A JSON representation of the newly created recommendation
 	 */
 	@PostMapping(value = "/recommendation", consumes = "application/json", produces = "application/json")
-	Recommendation createRecommendation(@RequestBody Recommendation body);
+	@ResponseStatus(HttpStatus.CREATED)
+	Mono<Recommendation> createRecommendation(@RequestBody Recommendation body);
 
 	/**
 	 * Sample usage: "curl -X DELETE $HOST:$PORT/recommendation?productId=1".
@@ -39,6 +45,7 @@ public interface RecommendationService {
 	 * @param productId Id of the product
 	 */
 	@DeleteMapping(value = "/recommendation")
-	void deleteRecommendations(@RequestParam(value = "productId", required = true) int productId);
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	Mono<Void> deleteRecommendations(@RequestParam(value = "productId", required = true) int productId);
 
 }

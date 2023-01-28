@@ -1,13 +1,17 @@
 be\snife\sbms\api\exceptions\InvalidInputException.class
 be\snife\sbms\api\core\review\Review.class
+be\snife\sbms\api\event\Event$Type.class
 be\snife\sbms\api\core\recommendation\Recommendation.class
 be\snife\sbms\api\composite\product\RecommendationSummary.class
 be\snife\sbms\api\core\recommendation\RecommendationService.class
 be\snife\sbms\api\composite\product\ReviewSummary.class
 be\snife\sbms\api\core\review\ReviewService.class
 be\snife\sbms\api\composite\product\ServiceAddresses.class
+be\snife\sbms\api\exceptions\BadRequestException.class
+be\snife\sbms\api\exceptions\EventProcessingException.class
 be\snife\sbms\api\core\product\Product.class
 be\snife\sbms\api\exceptions\NotFoundException.class
 be\snife\sbms\api\composite\product\ProductAggregate.class
+be\snife\sbms\api\event\Event.class
 be\snife\sbms\api\composite\product\ProductCompositeService.class
 be\snife\sbms\api\core\product\ProductService.class

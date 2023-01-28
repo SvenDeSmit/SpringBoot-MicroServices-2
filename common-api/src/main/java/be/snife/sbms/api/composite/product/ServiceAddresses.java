@@ -1,5 +1,8 @@
 package be.snife.sbms.api.composite.product;
 
+import lombok.ToString;
+
+@ToString
 public class ServiceAddresses {
   private final String cmp;
   private final String pro;

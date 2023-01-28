@@ -2,12 +2,15 @@ C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\composite\product\ServiceAddresses.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\recommendation\Recommendation.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\composite\product\RecommendationSummary.java
+C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\event\Event.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\review\Review.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\composite\product\ProductCompositeService.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\composite\product\ReviewSummary.java
+C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\exceptions\BadRequestException.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\exceptions\InvalidInputException.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\review\ReviewService.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\product\Product.java
+C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\exceptions\EventProcessingException.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\composite\product\ProductAggregate.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\core\recommendation\RecommendationService.java
 C:\dev\SpringBootMicroServices2\common-api\src\main\java\be\snife\sbms\api\exceptions\NotFoundException.java

@@ -22,4 +22,7 @@ docker tag springbootmicroservices2-product-composite:latest svendesmit/springbo
 
 Login: https://stackoverflow.com/questions/57108005/login-to-docker-hub-by-command-line
 
+
+In windows CMD window! (doen't work in git-bash)
+docker login
 docker-compose push

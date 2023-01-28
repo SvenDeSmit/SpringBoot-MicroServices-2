@@ -2,6 +2,9 @@ package be.snife.sbms.api.composite.product;
 
 import java.util.List;
 
+import lombok.ToString;
+
+@ToString
 public class ProductAggregate {
   private final int productId;
   private final String name;
