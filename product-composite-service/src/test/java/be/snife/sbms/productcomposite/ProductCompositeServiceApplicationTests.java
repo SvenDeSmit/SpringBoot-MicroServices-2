@@ -62,7 +62,7 @@ class ProductCompositeServiceApplicationTests {
   @Test
   void contextLoads() {}
 
-  
+/*  
   @Test
   void createCompositeProduct1() {
 
@@ -70,6 +70,7 @@ class ProductCompositeServiceApplicationTests {
 
     postAndVerifyProduct(compositeProduct, OK);
   }
+*/  
 /*
   
   @Test

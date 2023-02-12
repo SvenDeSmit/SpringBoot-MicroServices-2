@@ -40,4 +40,10 @@ public class ReviewServiceApplication {
 		log.info("Connected to MySQL: " + mysqlUri);
 	}
 
+	@Bean
+	public Scheduler publishEventScheduler() {
+		log.info("Creates a messagingScheduler with connectionPoolSize = {}", threadPoolSize);
+		return Schedulers.newBoundedElastic(threadPoolSize, taskQueueSize, "publish-pool");
+	}
+	
 }

@@ -8,7 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +21,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import be.snife.sbms.api.core.review.Review;
 import be.snife.sbms.api.core.review.ReviewService;
+import be.snife.sbms.api.event.Event;
+import be.snife.sbms.api.event.Event.Type;
 import be.snife.sbms.api.exceptions.InvalidInputException;
 import be.snife.sbms.review.persistence.ReviewEntity;
 import be.snife.sbms.review.persistence.ReviewRepository;
@@ -30,14 +36,19 @@ public class ReviewServiceImpl implements ReviewService {
 	private final ReviewRepository repository;
 	private final ReviewMapper mapper;
 	private final Scheduler jdbcScheduler;
+	private final StreamBridge streamBridge;
+    private final Scheduler publishEventScheduler;
+	
 
 	@Autowired
 	public ReviewServiceImpl(@Qualifier("jdbcScheduler") Scheduler jdbcScheduler, ReviewRepository repository,
-			ReviewMapper mapper, ServiceUtil serviceUtil) {
+			ReviewMapper mapper, ServiceUtil serviceUtil, StreamBridge streamBridge,@Qualifier("publishEventScheduler") Scheduler publishEventScheduler) {
 		this.jdbcScheduler = jdbcScheduler;
 		this.repository = repository;
 		this.mapper = mapper;
 		this.serviceUtil = serviceUtil;
+		this.streamBridge = streamBridge;
+		this.publishEventScheduler = publishEventScheduler;
 	}
 
 	@Override
@@ -57,8 +68,7 @@ public class ReviewServiceImpl implements ReviewService {
 			ReviewEntity entity = mapper.apiToEntity(body);
 			ReviewEntity newEntity = repository.save(entity);
 
-			log.debug("Review for Product with ID = {} and ReviewID {} is stored", body.getProductId(),
-					body.getReviewId());
+			log.debug("Review for Product with ID = {} and ReviewID {} is stored", body.getProductId(),body.getReviewId());
 			Review res = mapper.entityToApi(newEntity);
 			res.setServiceAddress(serviceUtil.getServiceAddress());
 
@@ -115,5 +125,26 @@ public class ReviewServiceImpl implements ReviewService {
 		repository.deleteAll(repository.findByProductId(productId));
 		log.debug("All Reviews Deleted for Product with ID = {} on {}", productId, serviceUtil.getServiceAddress());
 	}
+	
+	@Override
+	public Mono<Void> publishReviewEvent(@RequestBody Event<Integer, Review> msg) {
+	    return Mono.fromCallable(() -> {
+	        sendMessage("reviews-out-0", new Event<Integer, Review>(msg.getEventType(), msg.getKey(), msg.getData()));
+	        return msg;
+	      }).then()
+	      .subscribeOn(publishEventScheduler);
+	}
+	
+
+    private void sendMessage(String bindingName, Event<Integer, Review> event) {
+	    log.debug("Sending a Review {} message with ID {} to {}", event.getEventType(), event.getKey(),bindingName);
+        Message<Event<Integer, Review>> message = MessageBuilder.withPayload(event)
+            .setHeader("partitionKey", event.getKey())
+            .build();
+        streamBridge.send(bindingName, message);
+	    log.debug("{} Review Message with ID {} sent to {}", event.getEventType(), event.getKey(), bindingName);
+
+  }
+
 
 }

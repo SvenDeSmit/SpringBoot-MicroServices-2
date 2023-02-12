@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import be.snife.sbms.api.event.Event;
 import reactor.core.publisher.Mono;
 
 public interface ProductService {
@@ -43,5 +44,10 @@ public interface ProductService {
 	@DeleteMapping(value = "/product/{productId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Mono<Void> deleteProduct(@PathVariable int productId);
+	
+	@PostMapping(value = "/product/event", consumes = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	Mono<Void> publishProductEvent(@RequestBody Event<Integer, Product> event); 
+	
 
 }

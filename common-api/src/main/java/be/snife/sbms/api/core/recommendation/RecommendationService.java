@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import be.snife.sbms.api.event.Event;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,5 +48,10 @@ public interface RecommendationService {
 	@DeleteMapping(value = "/recommendation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Mono<Void> deleteRecommendations(@RequestParam(value = "productId", required = true) int productId);
+	
+	@PostMapping(value = "/recommendation/event", consumes = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	Mono<Void> publishRecommendationEvent(@RequestBody Event<Integer, Recommendation> event); 
+	
 
 }
