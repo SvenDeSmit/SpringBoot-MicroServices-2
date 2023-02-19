@@ -52,6 +52,10 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 	private final String recommendationServiceUrl;
 	private final String reviewServiceUrl;
 	
+	private final String productActuatorUrl;
+	private final String recommendationActuatorUrl;
+	private final String reviewActuatorUrl;
+	
 	  private final StreamBridge streamBridge;
 	  private final Scheduler publishEventScheduler;
 	
@@ -78,9 +82,13 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 		this.streamBridge = streamBridge;
 
 		productServiceUrl = "http://" + productServiceHost + ":" + productServicePort + "/product";
-		recommendationServiceUrl = "http://" + recommendationServiceHost + ":" + recommendationServicePort
-				+ "/recommendation";
+		recommendationServiceUrl = "http://" + recommendationServiceHost + ":" + recommendationServicePort + "/recommendation";
 		reviewServiceUrl = "http://" + reviewServiceHost + ":" + reviewServicePort + "/review";
+		
+		productActuatorUrl = "http://" + productServiceHost + ":" + productServicePort + "/actuator/health";
+		recommendationActuatorUrl = "http://" + recommendationServiceHost + ":" + recommendationServicePort + "/actuator/health";
+		reviewActuatorUrl = "http://" + reviewServiceHost + ":" + reviewServicePort + "/actuator/health";
+		
 	}
 
 	@Override
@@ -252,19 +260,18 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 	}
 
 	public Mono<Health> getProductHealth() {
-		return getHealth(productServiceUrl);
+		return getHealth(productActuatorUrl);
 	}
 
 	public Mono<Health> getRecommendationHealth() {
-		return getHealth(recommendationServiceUrl);
+		return getHealth(recommendationActuatorUrl);
 	}
 
 	public Mono<Health> getReviewHealth() {
-		return getHealth(reviewServiceUrl);
+		return getHealth(reviewActuatorUrl);
 	}
 
 	private Mono<Health> getHealth(String url) {
-		url += "/actuator/health";
 		log.debug("Will call the Health API on URL: {}", url);
 		return webClient.get().uri(url).retrieve().bodyToMono(String.class).map(s -> new Health.Builder().up().build())
 				.onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build())).log(log.getName(), FINE);

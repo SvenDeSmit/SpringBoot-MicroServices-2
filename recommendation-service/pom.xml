@@ -112,6 +112,13 @@
 		    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-starter-client -->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+			<version>2.7.10</version>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

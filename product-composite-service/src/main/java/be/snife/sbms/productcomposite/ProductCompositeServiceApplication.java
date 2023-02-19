@@ -47,7 +47,7 @@ public class ProductCompositeServiceApplication {
 	@Autowired
 	ProductCompositeIntegration integration;
 
-/*	
+	
 	@Bean
 	ReactiveHealthContributor coreServices() {
 
@@ -59,7 +59,7 @@ public class ProductCompositeServiceApplication {
 
 		return CompositeReactiveHealthContributor.fromMap(registry);
 	}
-*/
+
 	public static void main(String[] args) {
 		SpringApplication.run(ProductCompositeServiceApplication.class, args);
 		log.info("Starting ProductCompositeServiceApplication microservice ...");

@@ -1,7 +1,6 @@
 version: '2.1'
 
 services:
-
   product:
     build: product-service
     image: svendesmit/springbootmicroservices2-product:v1
@@ -9,21 +8,7 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy        
-      admin:
-        condition: service_healthy        
-
-  product-p1:
-    build: product-service
-    image: svendesmit/springbootmicroservices2-product:v1
-    mem_limit: 512m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       mongodb:
         condition: service_healthy
@@ -39,7 +24,7 @@ services:
     ports:
       - "8082:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       mongodb:
         condition: service_healthy
@@ -48,19 +33,6 @@ services:
       admin:
         condition: service_healthy        
 
-  recommendation-p1:
-    build: recommendation-service
-    image: svendesmit/springbootmicroservices2-recommendation:v1
-    mem_limit: 512m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
-    depends_on:
-      mongodb:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      admin:
-        condition: service_healthy        
 
   review:
     build: review-service
@@ -69,7 +41,7 @@ services:
     ports:
       - "8083:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -78,19 +50,6 @@ services:
       admin:
         condition: service_healthy        
 
-  review-p1:
-    build: review-service
-    image: svendesmit/springbootmicroservices2-review:v1
-    mem_limit: 512m
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
-    depends_on:
-      mysql:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      admin:
-        condition: service_healthy        
 
   product-composite:
     build: product-composite-service
@@ -99,13 +58,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       rabbitmq:
         condition: service_healthy
       admin:
         condition: service_healthy        
-
+      
   mysql:
     image: mysql:8.0.31
     mem_limit: 512m
@@ -155,7 +114,7 @@ services:
       - SPRING_BOOT_ADMIN_TITLE=My Spring Boot Admin
     # - SPRING_BOOT_ADMIN_USER_NAME=user
     # - SPRING_BOOT_ADMIN_USER_PASSWORD=password
-    # - SPRING_BOOT_ADMIN_SECURITY_ENABLED=false
+      - SPRING_BOOT_ADMIN_SECURITY_ENABLED=false
     volumes:
       - ./application-docker.properties:/opt/spring-boot-admin-docker/application-docker.properties
     ports:

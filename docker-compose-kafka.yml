@@ -9,11 +9,11 @@ services:
     ports:
       - "8081:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mongodb:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy        
       admin:
         condition: service_healthy        
@@ -23,11 +23,11 @@ services:
     image: svendesmit/springbootmicroservices2-product:v1
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
       mongodb:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy        
       admin:
         condition: service_healthy        
@@ -39,11 +39,11 @@ services:
     ports:
       - "8082:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mongodb:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy
       admin:
         condition: service_healthy        
@@ -53,11 +53,11 @@ services:
     image: svendesmit/springbootmicroservices2-recommendation:v1
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
       mongodb:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy
       admin:
         condition: service_healthy        
@@ -69,11 +69,11 @@ services:
     ports:
       - "8083:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mysql:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy
       admin:
         condition: service_healthy        
@@ -83,11 +83,11 @@ services:
     image: svendesmit/springbootmicroservices2-review:v1
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
     depends_on:
       mysql:
         condition: service_healthy
-      rabbitmq:
+      kafka:
         condition: service_healthy
       admin:
         condition: service_healthy        
@@ -99,9 +99,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
     depends_on:
-      rabbitmq:
+      kafka:
         condition: service_healthy
       admin:
         condition: service_healthy        
@@ -136,19 +136,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-
-  rabbitmq:
-    image: rabbitmq:3.11.7-management
-    mem_limit: 512m
-    ports:
-      - 5672:5672
-      - 15672:15672
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 5s
-      timeout: 2s
-      retries: 60
-      
+     
   admin:
     image: slydeveloper/spring-boot-admin
     environment:
@@ -166,3 +154,25 @@ services:
       timeout: 60s
       retries: 120
     container_name: spring_boot_admin_docker
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
