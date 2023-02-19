@@ -141,6 +141,7 @@ services:
         timeout: 10s
         retries: 10
 
+
   rabbitmq:
     image: rabbitmq:3.11.7-management
     mem_limit: 512m
